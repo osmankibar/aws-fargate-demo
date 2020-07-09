@@ -1,0 +1,186 @@
+﻿@model MainServer.Agent[]
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Demo App</h1>
+</div>
+
+<div class="row">
+    <div class="col-6">
+        <form>
+            <div class="form-group row">
+                <label for="workersPodCount" class="col-sm-4 col-form-label">Worker Count</label>
+                <div class="col-sm-8">
+                    <input type="number" class="form-control" id="workersPodCount" placeholder="Worker Count" min="1" max="100">
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-6">
+        <form>
+            <div class="form-group row">
+                <label for="fargatePodCount" class="col-sm-4 col-form-label">Fargate Count</label>
+                <div class="col-sm-8">
+                    <input type="number" class="form-control" id="fargatePodCount" placeholder="Fargate Count" min="1" max="100">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row">
+
+
+    <div class="col-md-4 offset-4 text-center">
+        <button class="btn btn-primary" id="start">Start</button>
+        <button class="btn btn-danger" id="clear">Clear</button>
+    </div>
+
+</div>
+<br/>
+
+@if (Model.All(i => i.Status == Status.Finished))
+{
+    <div class="row">
+        <div class="col-6">
+            <form>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Duration</label>
+                    <div class="col-sm-8">
+                        @{
+                            var workerStartDate = Model.Where(i => i.ServerType == ServerType.CA)
+                                .OrderBy(i => i.RequestDate).FirstOrDefault()?.RequestDate;
+
+                            var workerEndDate = Model.Where(i => i.ServerType == ServerType.CA)
+                                .OrderByDescending(i => i.FinishedDate).FirstOrDefault()?.FinishedDate;
+                        }
+
+                        @if (workerStartDate.HasValue && workerEndDate.HasValue && workerEndDate != default(DateTime))
+                        {
+                            <label class="col-sm-4 col-form-label">@((workerEndDate - workerStartDate).Value.TotalSeconds) sec</label>
+                        }
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-6">
+            <form>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Duration</label>
+                    <div class="col-sm-8">
+                        @{
+                            var fargateStartDate = Model.Where(i => i.ServerType == ServerType.Fargate)
+                                .OrderBy(i => i.RequestDate).FirstOrDefault()?.RequestDate;
+
+                            var fargateEndDate = Model.Where(i => i.ServerType == ServerType.Fargate)
+                                .OrderByDescending(i => i.FinishedDate).FirstOrDefault()?.FinishedDate;
+                        }
+
+                        @if (fargateStartDate.HasValue && fargateEndDate.HasValue && fargateEndDate != default(DateTime))
+                        {
+                            <label class="col-sm-4 col-form-label">@((fargateEndDate - fargateStartDate).Value.TotalSeconds) sec</label>
+                        }
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
+<div class="row">
+
+    <div class="col-6">
+
+        <ul class="list-group">
+            @foreach (var agent in Model.Where(i => i.ServerType == ServerType.CA))
+            {
+                <li class="list-group-item">
+                    @agent.Id
+                    @switch (agent.Status)
+                    {
+                        case Status.Pending:
+                            <span class="badge badge-warning">@agent.Status</span>
+                            break;
+                        case Status.Running:
+                            <span class="badge badge-primary">@agent.Status</span>
+                            break;
+                        case Status.Finished:
+                            <span class="badge badge-success">@agent.Status</span>
+                            break;
+                    }
+                    
+                </li>
+            }
+        </ul>
+    </div>
+
+    <div class="col-6">
+
+        <ul class="list-group">
+            @foreach (var agent in Model.Where(i => i.ServerType == ServerType.Fargate))
+            {
+                <li class="list-group-item">
+                    @agent.Id
+                    @switch (agent.Status)
+                    {
+                        case Status.Pending:
+                            <span class="badge badge-warning">@agent.Status</span>
+                            break;
+                        case Status.Running:
+                            <span class="badge badge-primary">@agent.Status</span>
+                            break;
+                        case Status.Finished:
+                            <span class="badge badge-success">@agent.Status</span>
+                            break;
+                    }
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script>
+    
+    $(function() {      
+        let intervalId;
+        $("#start").click(function(){
+            let workerCount=$("#workersPodCount").val();
+            let fargateCount=$("#fargatePodCount").val();
+            
+            $.get("agents?serverType=Fargate"+"&podCount="+fargateCount);
+            $.get("agents?serverType=CA"+"&podCount="+workerCount);    
+            
+            if(!intervalId)
+            {
+                intervalId=setInterval(function() {
+                   location.reload();
+                },2000);
+            }
+        });
+        
+        $("#clear").click(function() {
+          $.get("agents/clear");   
+        });
+        
+        $("#workersPodCount,#fargatePodCount").focus(function() {
+            if(intervalId)
+                clearInterval(intervalId);
+        });
+        
+        if($(".list-group-item").length>0)
+        {
+            intervalId=setInterval(function() {
+               location.reload();
+            },2000);
+        }
+        
+    });
+    
+    
+    </script>
+
+}

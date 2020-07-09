@@ -1,0 +1,25 @@
+﻿{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:26476",
+      "sslPort": 44366
+    }
+  },
+  "profiles": {
+    "mainServer": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "applicationUrl": "http://localhost:5000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_PORT": "3005",
+        "ASPNETCORE_K8_URL": "https://enwniprp3mjyne2.m.pipedream.net",
+        "ASPNETCORE_TOKEN": "eyJhbGciOiJSUzI1NiIsImtpZCI6Imh2ZVh2U1RHdUJwWlNNc05DWXZRenVwSFNNSmc3TWt0VDdlLVRrOUp2YWcifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLXZocDI4Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI3OTBkMmQ5Zi0wOGViLTQxNGItYjYyOC04MDZhNjY2YmRhOGYiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZXJuZXRlcy1kYXNoYm9hcmQ6YWRtaW4tdXNlciJ9.fWs3Gq_m5wB2AnLtw0LRF_1dLDV8b0LsJn-5_dTiyCKpo__uNQoKhhuvFR_pLxjJqDQLkdxYdoGH3T_IBvnV2y5m27xVINJPapnKDVDD8XCeCBrmDIX3mg_o6laGDiSuyZj5lYsgc1bFn5sJ5oqyDH_Obyfm3P1e_riWgHO_CEk0dJtRRoCu0T2K-5EgNCOIlxPBeJ2jX2k7Tg8ZZTWAHV6xXhrEWjZP4MwN1l71P1Dp58ElpOK5Mmhmu64tO5Du1FNizzDdDzxQ38UhX9RTjB59t5DjtKll_i8TPA4oI6QOms_2ltfSfPtz-smn6hEnRKCJ0TJIz51Un6pdZAYgxg",
+        "ASPNETCORE_AGENT_IMAGE": "702230020526.dkr.ecr.eu-central-1.amazonaws.com/agent:latest",
+        "ASPNETCORE_HOST": "my-service"
+      }
+    }
+  }
+}

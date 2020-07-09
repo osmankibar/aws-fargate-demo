@@ -1,0 +1,38 @@
+{
+  "apiVersion": "v1",
+  "kind": "Pod",
+  "metadata": {
+    "name": "{{AgentId}}-{{ServerType}}",
+    "namespace": "{{Namespace}}",
+    "labels": {
+      "task": "server",
+      "tier": "backend",
+      "tool": "netcore"
+    }
+  },
+  "spec": {
+    "containers": [
+      {
+        "name": "agent",
+        "image": "{{Image}}:latest",
+        "resources": {
+          "requests": {
+            "cpu": "250m",
+            "memory": "512Mi"
+          }
+        },
+        "env": [
+          {
+            "name": "SERVER_HOST",
+            "value": "{{Host}}"
+          },
+          {
+            "name": "AGENT_ID",
+            "value": "{{AgentId}}"
+          }
+        ]
+      }
+    ],
+    "restartPolicy": "Never"
+  }
+}
